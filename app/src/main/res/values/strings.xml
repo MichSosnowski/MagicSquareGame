@@ -10,4 +10,7 @@
     <string name="new_game_button">New Game</string>
     <string name="exit_game_button">Exit Game</string>
     <string name="help_button">Help</string>
+    <string name="level">Level:</string>
+    <string name="apply_button">Apply</string>
+    <string name="levelMinNumber">1</string>
 </resources>

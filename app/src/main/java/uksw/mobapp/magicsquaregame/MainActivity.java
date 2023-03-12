@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,11 +18,12 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    private EditText number1, number2, number3, number4, number5, number6, number7, number8, number9;
+    private EditText number1, number2, number3, number4, number5, number6, number7, number8, number9, levelNumber;
     private TextView result1, result2, result3, result4, result5, result6, information;
-    private Button submitButton, continueButton, newGameButton, helpButton;
+    private Button applyButton, submitButton, continueButton, newGameButton, helpButton;
     private Chronometer myChronometer;
     private ArrayList<Integer> randomNumbers;
+    private boolean applyUsed = false;
     private boolean[] buttonsState;
     private boolean[] rememberedButtonsState;
     private long currentTime = 0;
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         result6 = findViewById(R.id.result6);
         myChronometer = findViewById(R.id.chronometer);
         information = findViewById(R.id.information);
+        levelNumber = findViewById(R.id.levelNumber);
+        applyButton = findViewById(R.id.apply_button);
         submitButton = findViewById(R.id.submit_button);
         continueButton = findViewById(R.id.continue_button);
         newGameButton = findViewById(R.id.new_game_button);
@@ -96,6 +100,9 @@ public class MainActivity extends AppCompatActivity {
             savedInstanceState.putString("information", information.getText().toString());
         savedInstanceState.putBooleanArray("numberTexts", buttonsState);
         savedInstanceState.putBooleanArray("rememberedNumberTexts", rememberedButtonsState);
+        savedInstanceState.putBoolean("levelNumber", levelNumber.isEnabled());
+        savedInstanceState.putBoolean("apply_used", applyUsed);
+        savedInstanceState.putBoolean("apply", applyButton.isEnabled());
         savedInstanceState.putBoolean("submit", submitButton.isEnabled());
         savedInstanceState.putBoolean("continue", continueButton.isEnabled());
         savedInstanceState.putBoolean("new_game", newGameButton.isEnabled());
@@ -122,6 +129,9 @@ public class MainActivity extends AppCompatActivity {
         buttonsState = savedInstanceState.getBooleanArray("numberTexts");
         rememberedButtonsState = savedInstanceState.getBooleanArray("rememberedNumberTexts");
         setEditTextsEnabled();
+        levelNumber.setEnabled(savedInstanceState.getBoolean("levelNumber"));
+        applyUsed = savedInstanceState.getBoolean("apply_used");
+        applyButton.setEnabled(savedInstanceState.getBoolean("apply"));
         submitButton.setEnabled(savedInstanceState.getBoolean("submit"));
         continueButton.setEnabled(savedInstanceState.getBoolean("continue"));
         newGameButton.setEnabled(savedInstanceState.getBoolean("new_game"));
@@ -184,6 +194,18 @@ public class MainActivity extends AppCompatActivity {
         number9.setEnabled(buttonsState[8]);
     }
 
+    public void setLevel(View view) {
+        int level = Integer.parseInt(levelNumber.getText().toString());
+        if (level == 0 || level == 9) {
+            Toast.makeText(this, "Level should be from range (0, 9)", Toast.LENGTH_LONG).show();
+            return;
+        }
+        for (int i = 0; i < MAX_NUMBER - level; i++) giveAHint(view);
+        levelNumber.setEnabled(false);
+        applyButton.setEnabled(false);
+        applyUsed = true;
+    }
+
     public void checkAnswer(View view) {
         currentTime = myChronometer.getBase() - SystemClock.elapsedRealtime();
         myChronometer.stop();
@@ -206,6 +228,8 @@ public class MainActivity extends AppCompatActivity {
             information.setText(INCORRECT);
             continueButton.setEnabled(true);
         }
+        levelNumber.setEnabled(false);
+        applyButton.setEnabled(false);
         newGameButton.setEnabled(true);
         helpButton.setEnabled(false);
     }
@@ -215,6 +239,10 @@ public class MainActivity extends AppCompatActivity {
         continueButton.setEnabled(false);
         newGameButton.setEnabled(false);
         helpButton.setEnabled(true);
+        if (!applyUsed) {
+            levelNumber.setEnabled(true);
+            applyButton.setEnabled(true);
+        }
         System.arraycopy(rememberedButtonsState, 0, buttonsState, 0, rememberedButtonsState.length);
         setEditTextsEnabled();
         information.setText(NO_TEXT);
@@ -227,6 +255,10 @@ public class MainActivity extends AppCompatActivity {
         Arrays.fill(buttonsState, true);
         setEditTextsEnabled();
         information.setText(NO_TEXT);
+        levelNumber.setEnabled(true);
+        levelNumber.setText("1");
+        applyUsed = false;
+        applyButton.setEnabled(true);
         submitButton.setEnabled(true);
         continueButton.setEnabled(false);
         newGameButton.setEnabled(false);
