@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Magic Square Game</string>
+    <string name="instruction">Numbers 1 to 9 have to be\nused once and only once</string>
+    <string name="information">.. .. ..</string>
+    <string name="plus">+</string>
+    <string name="equals">=</string>
+    <string name="question_mark">?</string>
+    <string name="submit_button">Submit</string>
+    <string name="continue_button">Continue?</string>
+    <string name="new_game_button">New Game</string>
+    <string name="exit_game_button">Exit Game</string>
+    <string name="help_button">Help</string>
+</resources>
