@@ -19,7 +19,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     private EditText number1, number2, number3, number4, number5, number6, number7, number8, number9, levelNumber;
-    private TextView result1, result2, result3, result4, result5, result6, information;
+    private TextView result1, result2, result3, result4, result5, result6, information, scoreText;
     private Button applyButton, submitButton, continueButton, newGameButton, helpButton;
     private Chronometer myChronometer;
     private ArrayList<Integer> randomNumbers;
@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private final String CORRECT = "Congratulations! Correct answer.";
     private final String INCORRECT = "Incorrect answer!";
     private final String NO_TEXT = ".. .. ..";
+    private final String TEXT_SCORE = "Your score: ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         myChronometer = findViewById(R.id.chronometer);
         information = findViewById(R.id.information);
         levelNumber = findViewById(R.id.levelNumber);
+        scoreText = findViewById(R.id.scoreText);
         applyButton = findViewById(R.id.apply_button);
         submitButton = findViewById(R.id.submit_button);
         continueButton = findViewById(R.id.continue_button);
@@ -107,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
         savedInstanceState.putBoolean("continue", continueButton.isEnabled());
         savedInstanceState.putBoolean("new_game", newGameButton.isEnabled());
         savedInstanceState.putBoolean("help", helpButton.isEnabled());
+        savedInstanceState.putString("scoreText", scoreText.getText().toString());
         savedInstanceState.putLong("chronometer", currentTime);
         super.onSaveInstanceState(savedInstanceState);
     }
@@ -136,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
         continueButton.setEnabled(savedInstanceState.getBoolean("continue"));
         newGameButton.setEnabled(savedInstanceState.getBoolean("new_game"));
         helpButton.setEnabled(savedInstanceState.getBoolean("help"));
+        scoreText.setText(savedInstanceState.getString("scoreText"));
         currentTime = savedInstanceState.getLong("chronometer");
         setResults();
     }
@@ -206,7 +210,27 @@ public class MainActivity extends AppCompatActivity {
         applyUsed = true;
     }
 
+    private int calculateResult(long timeForResult) {
+        int result = MAX_NUMBER * 100;
+
+        int hints = 0;
+        for (boolean i : rememberedButtonsState) {
+            if (!i)
+                hints++;
+        }
+        result -= hints * 100;
+
+        long timePunishment = SystemClock.elapsedRealtime() - timeForResult;
+        if (timePunishment > 300000) {
+            timePunishment = (timePunishment - 300000) / 60000;
+            int punishment = ((int) timePunishment / 10) * 10;
+            result -= punishment;
+        }
+        return result;
+    }
+
     public void checkAnswer(View view) {
+        long timeForResult = myChronometer.getBase();
         currentTime = myChronometer.getBase() - SystemClock.elapsedRealtime();
         myChronometer.stop();
         submitButton.setEnabled(false);
@@ -223,6 +247,9 @@ public class MainActivity extends AppCompatActivity {
             && number8.getText().toString().equals(String.valueOf(randomNumbers.get(7)))
             && number9.getText().toString().equals(String.valueOf(randomNumbers.get(8)))) {
             information.setText(CORRECT);
+            int result = calculateResult(timeForResult);
+            String score = TEXT_SCORE + result;
+            scoreText.setText(score);
         }
         else {
             information.setText(INCORRECT);
@@ -263,6 +290,7 @@ public class MainActivity extends AppCompatActivity {
         continueButton.setEnabled(false);
         newGameButton.setEnabled(false);
         helpButton.setEnabled(true);
+        scoreText.setText("");
         randomNumbers.clear();
         chooseRandomNumbers(MAX_NUMBER);
         setResults();

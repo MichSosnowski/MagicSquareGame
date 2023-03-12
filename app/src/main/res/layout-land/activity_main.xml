@@ -370,6 +370,13 @@
                 app:layout_columnSpan="2"
                 app:layout_gravity="center" />
         </androidx.gridlayout.widget.GridLayout>
+
+        <TextView
+            android:id="@+id/scoreText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="" />
     </LinearLayout>
 
 </LinearLayout>

@@ -357,4 +357,11 @@
             android:onClick="giveAHint"
             android:text="@string/help_button" />
     </androidx.gridlayout.widget.GridLayout>
+
+    <TextView
+        android:id="@+id/scoreText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="" />
 </LinearLayout>
