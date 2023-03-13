@@ -200,12 +200,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setLevel(View view) {
-        int level = Integer.parseInt(levelNumber.getText().toString());
-        if (level == 0 || level == 9) {
-            Toast.makeText(this, "Level should be from range (0, 9)", Toast.LENGTH_LONG).show();
+        try {
+            int level = Integer.parseInt(levelNumber.getText().toString());
+            if (level == 0 || level == 9) {
+                Toast.makeText(this, "Level should be from range (0, 9)", Toast.LENGTH_LONG).show();
+                return;
+            }
+            for (int i = 0; i < MAX_NUMBER - level; i++) giveAHint(view);
+        }
+        catch (NumberFormatException e) {
+            Toast.makeText(this, "Level cannot be empty", Toast.LENGTH_LONG).show();
             return;
         }
-        for (int i = 0; i < MAX_NUMBER - level; i++) giveAHint(view);
         levelNumber.setEnabled(false);
         applyButton.setEnabled(false);
         helpButton.setEnabled(true);
