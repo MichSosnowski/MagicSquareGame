@@ -289,6 +289,7 @@ public class MainActivity extends AppCompatActivity {
     public void createNewGame(View view) {
         setEditTextsClear();
         Arrays.fill(buttonsState, true);
+        Arrays.fill(rememberedButtonsState, true);
         setEditTextsEnabled();
         information.setText(NO_TEXT);
         levelNumber.setEnabled(true);
@@ -323,68 +324,61 @@ public class MainActivity extends AppCompatActivity {
                 number1.setText(String.valueOf(randomNumbers.get(choice)));
                 number1.setEnabled(false);
                 buttonsState[choice] = false;
-                checkEditTextsAllDisabled();
                 break;
             }
             else if (choice == 1 && number2.isEnabled()) {
                 number2.setText(String.valueOf(randomNumbers.get(choice)));
                 number2.setEnabled(false);
                 buttonsState[choice] = false;
-                checkEditTextsAllDisabled();
                 break;
             }
             else if (choice == 2 && number3.isEnabled()) {
                 number3.setText(String.valueOf(randomNumbers.get(choice)));
                 number3.setEnabled(false);
                 buttonsState[choice] = false;
-                checkEditTextsAllDisabled();
                 break;
             }
             else if (choice == 3 && number4.isEnabled()) {
                 number4.setText(String.valueOf(randomNumbers.get(choice)));
                 number4.setEnabled(false);
                 buttonsState[choice] = false;
-                checkEditTextsAllDisabled();
                 break;
             }
             else if (choice == 4 && number5.isEnabled()) {
                 number5.setText(String.valueOf(randomNumbers.get(choice)));
                 number5.setEnabled(false);
                 buttonsState[choice] = false;
-                checkEditTextsAllDisabled();
                 break;
             }
             else if (choice == 5 && number6.isEnabled()) {
                 number6.setText(String.valueOf(randomNumbers.get(choice)));
                 number6.setEnabled(false);
                 buttonsState[choice] = false;
-                checkEditTextsAllDisabled();
                 break;
             }
             else if (choice == 6 && number7.isEnabled()) {
                 number7.setText(String.valueOf(randomNumbers.get(choice)));
                 number7.setEnabled(false);
                 buttonsState[choice] = false;
-                checkEditTextsAllDisabled();
                 break;
             }
             else if (choice == 7 && number8.isEnabled()) {
                 number8.setText(String.valueOf(randomNumbers.get(choice)));
                 number8.setEnabled(false);
                 buttonsState[choice] = false;
-                checkEditTextsAllDisabled();
                 break;
             }
             else if (choice == 8 && number9.isEnabled()) {
                 number9.setText(String.valueOf(randomNumbers.get(choice)));
                 number9.setEnabled(false);
                 buttonsState[choice] = false;
-                checkEditTextsAllDisabled();
                 break;
             }
             else
                 choice = random.nextInt(MAX_NUMBER);
         }
+        System.arraycopy(buttonsState, 0, rememberedButtonsState, 0, buttonsState.length);
+        checkEditTextsAllDisabled();
     }
 
     private void checkEditTextsAllDisabled() {
