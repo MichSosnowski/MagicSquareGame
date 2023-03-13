@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         helpButton = findViewById(R.id.help_button);
         continueButton.setEnabled(false);
         newGameButton.setEnabled(false);
+        helpButton.setEnabled(false);
         randomNumbers = new ArrayList<>();
         buttonsState = new boolean[] {true, true, true, true, true, true, true, true, true};
         rememberedButtonsState = new boolean[buttonsState.length];
@@ -207,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0; i < MAX_NUMBER - level; i++) giveAHint(view);
         levelNumber.setEnabled(false);
         applyButton.setEnabled(false);
+        helpButton.setEnabled(true);
         applyUsed = true;
     }
 
@@ -289,7 +291,6 @@ public class MainActivity extends AppCompatActivity {
         submitButton.setEnabled(true);
         continueButton.setEnabled(false);
         newGameButton.setEnabled(false);
-        helpButton.setEnabled(true);
         scoreText.setText("");
         randomNumbers.clear();
         chooseRandomNumbers(MAX_NUMBER);
