@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
             int punishment = ((int) timePunishment / 10) * 10;
             result -= punishment;
         }
-        return result;
+        return Math.max(result, 0);
     }
 
     public void checkAnswer(View view) {
@@ -390,13 +390,17 @@ public class MainActivity extends AppCompatActivity {
         if (!number1.isEnabled() && !number2.isEnabled() && !number3.isEnabled() && !number4.isEnabled()
             && !number5.isEnabled() && !number6.isEnabled() && !number7.isEnabled() && !number8.isEnabled()
             && !number9.isEnabled()) {
-            myChronometer.stop();
+            long timeForResult = myChronometer.getBase();
             currentTime = myChronometer.getBase() - SystemClock.elapsedRealtime();
+            myChronometer.stop();
             submitButton.setEnabled(false);
             continueButton.setEnabled(false);
             newGameButton.setEnabled(true);
             helpButton.setEnabled(false);
             information.setText(CORRECT);
+            int result = calculateResult(timeForResult);
+            String score = TEXT_SCORE + result;
+            scoreText.setText(score);
         }
     }
 }
