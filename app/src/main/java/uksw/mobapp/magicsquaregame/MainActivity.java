@@ -273,11 +273,12 @@ public class MainActivity extends AppCompatActivity {
         submitButton.setEnabled(true);
         continueButton.setEnabled(false);
         newGameButton.setEnabled(false);
-        helpButton.setEnabled(true);
         if (!applyUsed) {
             levelNumber.setEnabled(true);
             applyButton.setEnabled(true);
         }
+        else
+            helpButton.setEnabled(true);
         System.arraycopy(rememberedButtonsState, 0, buttonsState, 0, rememberedButtonsState.length);
         setEditTextsEnabled();
         information.setText(NO_TEXT);
