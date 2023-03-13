@@ -231,7 +231,7 @@ public class MainActivity extends AppCompatActivity {
         long timePunishment = SystemClock.elapsedRealtime() - timeForResult;
         if (timePunishment > 300000) {
             timePunishment = (timePunishment - 300000) / 60000;
-            int punishment = ((int) timePunishment / 10) * 10;
+            int punishment = (int) timePunishment * 10;
             result -= punishment;
         }
         return Math.max(result, 0);
