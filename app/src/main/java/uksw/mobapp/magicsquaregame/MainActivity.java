@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private final int EXIT_STATUS = 0;
     private final String CORRECT = "Congratulations! Correct answer.";
     private final String INCORRECT = "Incorrect answer!";
-    private final String NO_TEXT = ".. .. ..";
+    private final String NO_TEXT = "";
     private final String TEXT_SCORE = "Your score: ";
 
     @Override
