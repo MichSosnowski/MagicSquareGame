@@ -202,8 +202,8 @@ public class MainActivity extends AppCompatActivity {
     public void setLevel(View view) {
         try {
             int level = Integer.parseInt(levelNumber.getText().toString());
-            if (level == 0 || level == 9) {
-                Toast.makeText(this, "Level should be from range (0, 9)", Toast.LENGTH_LONG).show();
+            if (level == 0) {
+                Toast.makeText(this, "Level should be greater than 0", Toast.LENGTH_LONG).show();
                 return;
             }
             for (int i = 0; i < MAX_NUMBER - level; i++) giveAHint(view);
