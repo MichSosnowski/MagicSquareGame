@@ -1,3 +1,9 @@
+/**********************************************
+ * Android and Mobile Application Programming *
+ *            Magic Square Game               *
+ *         Author: Michał Sosnowski           *
+ *         Academic year: 2022/2023           *
+ **********************************************/
 package uksw.mobapp.magicsquaregame;
 
 import androidx.annotation.NonNull;
@@ -16,28 +22,64 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
+/**
+ * This class is responsible for the correct operation of the main activity
+ * of this application. It manages its life cycle and the the entire functioning.
+ * It is able to display two layouts depending on the screen orientation. It calls
+ * the appropriate methods for each of the buttons contained in these layouts.
+ */
 public class MainActivity extends AppCompatActivity {
 
+    // input fields of the magic square
     private EditText number1, number2, number3, number4, number5, number6, number7, number8, number9, levelNumber;
+
+    // fields containing the results for the corresponding rows and columns in the magic square
     private TextView result1, result2, result3, result4, result5, result6, information, scoreText;
+
+    // references to the buttons used in the application
     private Button applyButton, submitButton, continueButton, newGameButton, helpButton;
+
+    // reference to the chronometer - the timer used in the application
     private Chronometer myChronometer;
+
+    // an array containing random number in the range (0, 9) without repetition
     private ArrayList<Integer> randomNumbers;
+
+    // information about whether the Apply button has been clicked
     private boolean applyUsed = false;
+
+    // input field states of the magic square - enabled or disabled
     private boolean[] editTextsState;
+
+    // remembered last input field states of the magic square
     private boolean[] rememberedEditTextsState;
+
+    // current time since the beginning of the game
     private long currentTime = 0;
+
+    // maximum number of numbers drawn equal to the number of fields of the magic square
     private final int MAX_NUMBER = 9;
+
+    // success status for exiting the application
     private final int EXIT_STATUS = 0;
+
+    // text displayed after the player wins the game
     private final String CORRECT = "Congratulations! Correct answer.";
+
+    // text displayed after the player loses the game
     private final String INCORRECT = "Incorrect answer!";
+
+    // no text displayed during the game in the results box
     private final String NO_TEXT = "";
+
+    // text with the score displayed after the game
     private final String TEXT_SCORE = "Your score: ";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // retrieving references to objects from layout files (buttons, edittexts etc.)
         number1 = findViewById(R.id.number1);
         number2 = findViewById(R.id.number2);
         number3 = findViewById(R.id.number3);
@@ -62,9 +104,11 @@ public class MainActivity extends AppCompatActivity {
         continueButton = findViewById(R.id.continue_button);
         newGameButton = findViewById(R.id.new_game_button);
         helpButton = findViewById(R.id.help_button);
+        // setting the appropriate states for the buttons
         continueButton.setEnabled(false);
         newGameButton.setEnabled(false);
         helpButton.setEnabled(false);
+        // initialize arrays, draw numbers and fill GUI with them
         randomNumbers = new ArrayList<>();
         editTextsState = new boolean[] {true, true, true, true, true, true, true, true, true};
         rememberedEditTextsState = new boolean[editTextsState.length];
@@ -72,6 +116,9 @@ public class MainActivity extends AppCompatActivity {
         setResults();
     }
 
+    /**
+     * life cycle methods of the main activity
+     */
     @Override
     protected void onResume() {
         super.onResume();
@@ -145,6 +192,10 @@ public class MainActivity extends AppCompatActivity {
         setResults();
     }
 
+    /**
+     * This method draws numbers in the range (0, 9) without repetition
+     * and saves them in the array - randomNumbers.
+     */
     protected void chooseRandomNumbers(int maxNumber) {
         Random random = new Random();
         for (int i = 0; i < maxNumber; i++) {
@@ -160,6 +211,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * This method sets the results of adding the drawn numbers for the rows and columns
+     * of the magic square.
+     */
     protected void setResults() {
         int result = randomNumbers.get(0) + randomNumbers.get(1) + randomNumbers.get(2);
         result1.setText(String.valueOf(result));
@@ -175,6 +230,9 @@ public class MainActivity extends AppCompatActivity {
         result6.setText(String.valueOf(result));
     }
 
+    /**
+     * This method removes the contents of the input fields of the magic square.
+     */
     private void setEditTextsClear() {
         number1.setText("");
         number2.setText("");
@@ -187,6 +245,10 @@ public class MainActivity extends AppCompatActivity {
         number9.setText("");
     }
 
+    /**
+     * This method sets the state of the input fields of the magic square -
+     * enabled or disabled.
+     */
     private void setEditTextsEnabled() {
         number1.setEnabled(editTextsState[0]);
         number2.setEnabled(editTextsState[1]);
@@ -199,9 +261,15 @@ public class MainActivity extends AppCompatActivity {
         number9.setEnabled(editTextsState[8]);
     }
 
+    /**
+     * This method is called when the player presses the Apply button.
+     * It sets the level of the game. Level 1 means one digit missing,
+     * level 2 - two digits missing etc.
+     */
     public void setLevel(View view) {
         try {
             int level = Integer.parseInt(levelNumber.getText().toString());
+            // Level of the game cannot be equal to 0 (no missing digits).
             if (level == 0) {
                 Toast.makeText(this, "Level should be greater than 0", Toast.LENGTH_LONG).show();
                 return;
@@ -218,6 +286,9 @@ public class MainActivity extends AppCompatActivity {
         applyUsed = true;
     }
 
+    /**
+     * This method calculates the result of the entire game.
+     */
     private int calculateResult(long timeForResult) {
         int result = MAX_NUMBER * 100;
 
@@ -237,6 +308,10 @@ public class MainActivity extends AppCompatActivity {
         return Math.max(result, 0);
     }
 
+    /**
+     * This method checks whether the answers of the player are correct or not.
+     * It is called when the player presses the Submit button.
+     */
     public void checkAnswer(View view) {
         long timeForResult = myChronometer.getBase();
         currentTime = myChronometer.getBase() - SystemClock.elapsedRealtime();
@@ -269,6 +344,10 @@ public class MainActivity extends AppCompatActivity {
         helpButton.setEnabled(false);
     }
 
+    /**
+     * This method allows the player to continue the game.
+     * It is called when the player presses the Continue? button.
+     */
     public void continueGame(View view) {
         submitButton.setEnabled(true);
         continueButton.setEnabled(false);
@@ -286,6 +365,11 @@ public class MainActivity extends AppCompatActivity {
         myChronometer.start();
     }
 
+    /**
+     * This method allows the player to start a new game.
+     * It is called when the player presses the New Game button.
+     * Then, this method initializes the new game.
+     */
     public void createNewGame(View view) {
         setEditTextsClear();
         Arrays.fill(editTextsState, true);
@@ -306,16 +390,30 @@ public class MainActivity extends AppCompatActivity {
         restartMyChronometer();
     }
 
+    /**
+     * This method restarts the chronometer - the timer used
+     * in the game.
+     */
     private void restartMyChronometer() {
         currentTime = 0;
         myChronometer.setBase(SystemClock.elapsedRealtime() + currentTime);
         myChronometer.start();
     }
 
+    /**
+     * This method is called when the player presses the Exit Game button.
+     * Then, the application will be closed.
+     */
     public void exitApp(View view) {
         System.exit(EXIT_STATUS);
     }
 
+    /**
+     * This method is called when the player presses the Help button.
+     * It gives them a hint where to enter one number. This number is
+     * entered by the application and the player cannot edit the input field
+     * containing this number.
+     */
     public void giveAHint(View view) {
         Random random = new Random();
         int choice = random.nextInt(MAX_NUMBER);
@@ -381,6 +479,11 @@ public class MainActivity extends AppCompatActivity {
         checkEditTextsAllDisabled();
     }
 
+    /**
+     * This method checks if all input fields are disabled by pressing Apply
+     * or the Help button. If so, the game is over and the score for the player
+     * is displayed.
+     */
     private void checkEditTextsAllDisabled() {
         if (!number1.isEnabled() && !number2.isEnabled() && !number3.isEnabled() && !number4.isEnabled()
             && !number5.isEnabled() && !number6.isEnabled() && !number7.isEnabled() && !number8.isEnabled()
