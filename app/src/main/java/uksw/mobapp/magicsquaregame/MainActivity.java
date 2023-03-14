@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private Chronometer myChronometer;
     private ArrayList<Integer> randomNumbers;
     private boolean applyUsed = false;
-    private boolean[] buttonsState;
-    private boolean[] rememberedButtonsState;
+    private boolean[] editTextsState;
+    private boolean[] rememberedEditTextsState;
     private long currentTime = 0;
     private final int MAX_NUMBER = 9;
     private final int EXIT_STATUS = 0;
@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity {
         newGameButton.setEnabled(false);
         helpButton.setEnabled(false);
         randomNumbers = new ArrayList<>();
-        buttonsState = new boolean[] {true, true, true, true, true, true, true, true, true};
-        rememberedButtonsState = new boolean[buttonsState.length];
+        editTextsState = new boolean[] {true, true, true, true, true, true, true, true, true};
+        rememberedEditTextsState = new boolean[editTextsState.length];
         chooseRandomNumbers(MAX_NUMBER);
         setResults();
     }
@@ -101,8 +101,8 @@ public class MainActivity extends AppCompatActivity {
         savedInstanceState.putInt("number9", randomNumbers.get(8));
         if (!information.getText().toString().equals(NO_TEXT))
             savedInstanceState.putString("information", information.getText().toString());
-        savedInstanceState.putBooleanArray("numberTexts", buttonsState);
-        savedInstanceState.putBooleanArray("rememberedNumberTexts", rememberedButtonsState);
+        savedInstanceState.putBooleanArray("numberTexts", editTextsState);
+        savedInstanceState.putBooleanArray("rememberedNumberTexts", rememberedEditTextsState);
         savedInstanceState.putBoolean("levelNumber", levelNumber.isEnabled());
         savedInstanceState.putBoolean("apply_used", applyUsed);
         savedInstanceState.putBoolean("apply", applyButton.isEnabled());
@@ -130,8 +130,8 @@ public class MainActivity extends AppCompatActivity {
         randomNumbers.add(savedInstanceState.getInt("number9"));
         if (savedInstanceState.containsKey("information"))
             information.setText(savedInstanceState.getString("information"));
-        buttonsState = savedInstanceState.getBooleanArray("numberTexts");
-        rememberedButtonsState = savedInstanceState.getBooleanArray("rememberedNumberTexts");
+        editTextsState = savedInstanceState.getBooleanArray("numberTexts");
+        rememberedEditTextsState = savedInstanceState.getBooleanArray("rememberedNumberTexts");
         setEditTextsEnabled();
         levelNumber.setEnabled(savedInstanceState.getBoolean("levelNumber"));
         applyUsed = savedInstanceState.getBoolean("apply_used");
@@ -188,15 +188,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setEditTextsEnabled() {
-        number1.setEnabled(buttonsState[0]);
-        number2.setEnabled(buttonsState[1]);
-        number3.setEnabled(buttonsState[2]);
-        number4.setEnabled(buttonsState[3]);
-        number5.setEnabled(buttonsState[4]);
-        number6.setEnabled(buttonsState[5]);
-        number7.setEnabled(buttonsState[6]);
-        number8.setEnabled(buttonsState[7]);
-        number9.setEnabled(buttonsState[8]);
+        number1.setEnabled(editTextsState[0]);
+        number2.setEnabled(editTextsState[1]);
+        number3.setEnabled(editTextsState[2]);
+        number4.setEnabled(editTextsState[3]);
+        number5.setEnabled(editTextsState[4]);
+        number6.setEnabled(editTextsState[5]);
+        number7.setEnabled(editTextsState[6]);
+        number8.setEnabled(editTextsState[7]);
+        number9.setEnabled(editTextsState[8]);
     }
 
     public void setLevel(View view) {
@@ -222,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
         int result = MAX_NUMBER * 100;
 
         int hints = 0;
-        for (boolean i : rememberedButtonsState) {
+        for (boolean i : rememberedEditTextsState) {
             if (!i)
                 hints++;
         }
@@ -242,8 +242,8 @@ public class MainActivity extends AppCompatActivity {
         currentTime = myChronometer.getBase() - SystemClock.elapsedRealtime();
         myChronometer.stop();
         submitButton.setEnabled(false);
-        System.arraycopy(buttonsState, 0, rememberedButtonsState, 0, buttonsState.length);
-        Arrays.fill(buttonsState, false);
+        System.arraycopy(editTextsState, 0, rememberedEditTextsState, 0, editTextsState.length);
+        Arrays.fill(editTextsState, false);
         setEditTextsEnabled();
         if (number1.getText().toString().equals(String.valueOf(randomNumbers.get(0)))
             && number2.getText().toString().equals(String.valueOf(randomNumbers.get(1)))
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else
             helpButton.setEnabled(true);
-        System.arraycopy(rememberedButtonsState, 0, buttonsState, 0, rememberedButtonsState.length);
+        System.arraycopy(rememberedEditTextsState, 0, editTextsState, 0, rememberedEditTextsState.length);
         setEditTextsEnabled();
         information.setText(NO_TEXT);
         myChronometer.setBase(SystemClock.elapsedRealtime() + currentTime);
@@ -288,8 +288,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void createNewGame(View view) {
         setEditTextsClear();
-        Arrays.fill(buttonsState, true);
-        Arrays.fill(rememberedButtonsState, true);
+        Arrays.fill(editTextsState, true);
+        Arrays.fill(rememberedEditTextsState, true);
         setEditTextsEnabled();
         information.setText(NO_TEXT);
         levelNumber.setEnabled(true);
@@ -323,61 +323,61 @@ public class MainActivity extends AppCompatActivity {
             if (choice == 0 && number1.isEnabled()) {
                 number1.setText(String.valueOf(randomNumbers.get(choice)));
                 number1.setEnabled(false);
-                buttonsState[choice] = false;
+                editTextsState[choice] = false;
                 break;
             }
             else if (choice == 1 && number2.isEnabled()) {
                 number2.setText(String.valueOf(randomNumbers.get(choice)));
                 number2.setEnabled(false);
-                buttonsState[choice] = false;
+                editTextsState[choice] = false;
                 break;
             }
             else if (choice == 2 && number3.isEnabled()) {
                 number3.setText(String.valueOf(randomNumbers.get(choice)));
                 number3.setEnabled(false);
-                buttonsState[choice] = false;
+                editTextsState[choice] = false;
                 break;
             }
             else if (choice == 3 && number4.isEnabled()) {
                 number4.setText(String.valueOf(randomNumbers.get(choice)));
                 number4.setEnabled(false);
-                buttonsState[choice] = false;
+                editTextsState[choice] = false;
                 break;
             }
             else if (choice == 4 && number5.isEnabled()) {
                 number5.setText(String.valueOf(randomNumbers.get(choice)));
                 number5.setEnabled(false);
-                buttonsState[choice] = false;
+                editTextsState[choice] = false;
                 break;
             }
             else if (choice == 5 && number6.isEnabled()) {
                 number6.setText(String.valueOf(randomNumbers.get(choice)));
                 number6.setEnabled(false);
-                buttonsState[choice] = false;
+                editTextsState[choice] = false;
                 break;
             }
             else if (choice == 6 && number7.isEnabled()) {
                 number7.setText(String.valueOf(randomNumbers.get(choice)));
                 number7.setEnabled(false);
-                buttonsState[choice] = false;
+                editTextsState[choice] = false;
                 break;
             }
             else if (choice == 7 && number8.isEnabled()) {
                 number8.setText(String.valueOf(randomNumbers.get(choice)));
                 number8.setEnabled(false);
-                buttonsState[choice] = false;
+                editTextsState[choice] = false;
                 break;
             }
             else if (choice == 8 && number9.isEnabled()) {
                 number9.setText(String.valueOf(randomNumbers.get(choice)));
                 number9.setEnabled(false);
-                buttonsState[choice] = false;
+                editTextsState[choice] = false;
                 break;
             }
             else
                 choice = random.nextInt(MAX_NUMBER);
         }
-        System.arraycopy(buttonsState, 0, rememberedButtonsState, 0, buttonsState.length);
+        System.arraycopy(editTextsState, 0, rememberedEditTextsState, 0, editTextsState.length);
         checkEditTextsAllDisabled();
     }
 
